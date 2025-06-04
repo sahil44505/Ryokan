@@ -1,0 +1,288 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  kindeId   String?   @unique
+  
+  firstName String?
+  lastName  String?
+  name String?
+  email String? @unique
+  emailVerified DateTime? 
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  bookings Bookings[]
+<<<<<<< HEAD
+ 
+  listings Listings[]
+  trips Trips[]
+=======
+  accounts Accounts[]
+  listings Listings[]
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+  
+
+  places Places[]
+}
+
+<<<<<<< HEAD
+
+=======
+model Accounts{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String? @db.String
+  access_token String? @db.String
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String? @db.String
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([ provider, providerAccountId])
+}
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
+model Listings{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  title String
+  description String
+  category String
+  type String
+  roomCount Int
+  price Int
+  currency String?
+  reviews String?
+  gps_coordinates Json?
+  imageSrc String
+  amenities String[]
+  guestsCount Int
+  bedrooms Int?
+  beds Int?
+  bathroomCount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings Bookings[]
+}
+<<<<<<< HEAD
+model Bookings {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  listingId  String?  @db.ObjectId
+  title      String 
+  startDate  DateTime
+  endDate    DateTime
+  Image      String?
+  totalPrice Int
+  createdAt  DateTime @default(now())
+  ratings  Int?
+  gps_coordinates Json @default("{}")
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listings? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Trips{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  tripsId String 
+  originText String 
+  destinationText String
+  distanceInKm Float
+  duration  Json
+  route Json
+  directionsResult Json
+  estimatedCost Float
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+}
+=======
+model Bookings{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  listingId String @db.ObjectId
+  startDate DateTime
+  endDate DateTime
+  totalPrice Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listings @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+model Places{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  category Json
+}
+<<<<<<< HEAD
+=======
+type Beaches{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+
+type Modern{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type CountrySide{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Pools{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+}
+
+type Islands{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Lake{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Skiing{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Castles{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Camping{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+type Cave{
+ 
+  placeId String 
+  title String
+  gps_coordinates Json?
+  rating Float?
+  reviews Int?
+  address String
+  phone String?
+  user_review String?
+  thumbnail String
+  types String[] 
+
+}
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca

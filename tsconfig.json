@@ -1,0 +1,66 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+<<<<<<< HEAD
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/[...nextauth].ts", "app/api/auth/[kindeAuth]/route.ts", "app/api/createOrder.ts/route.ts", "createOrder/route.js", "app/components/Payment.tsx", "app/api/searchHotels/route.ts", "app/api/imageshotel/route.js"],
+  "exclude": ["node_modules"]
+}
+=======
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/[...nextauth]", "app/api/auth/[kindeAuth]/route.ts"],
+  "exclude": ["node_modules"]
+}
+=======
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/[...nextauth]", "app/api/auth/[kindeAuth]/route.ts"],
+  "exclude": ["node_modules"]
+}
+>>>>>>> e2e39cc47e4e07420d8618d5ac1cffe754c2e476
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca

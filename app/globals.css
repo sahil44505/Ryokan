@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+<<<<<<< HEAD
+:root {
+  height: 100%;
+ 
+  
+}
+.rdrMonth {
+  width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+  font-size: 16px !important;
+  width: 100% !important;
+}
+.pac-container {
+  z-index: 10000 !important;
+  position: absolute !important;
+}
+=======
+:root{
+  height:100%;
+  overflow-x: hidden;
+}
+>>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
