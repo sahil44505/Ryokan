@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
 {
   "name": "hotel-booking",
   "version": "0.1.0",
@@ -13,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
+
     "@cashfreepayments/cashfree-js": "^1.0.5",
     "@kinde-oss/kinde-auth-nextjs": "^2.4.6",
     "@prisma/client": "^6.1.0",
@@ -31,18 +28,18 @@
     "hotel-booking": "file:",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.475.0",
-=======
+
     "@kinde-oss/kinde-auth-nextjs": "^2.4.6",
     "@prisma/client": "^6.1.0",
     "axios": "^1.7.9",
     "child_process": "^1.0.2",
     "hotel-booking": "file:",
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
     "mongodb": "^6.12.0",
     "net": "^1.0.2",
     "next": "^15.1.5",
     "next-auth": "^5.0.0-beta.25",
-<<<<<<< HEAD
+
     "nodemon": "^3.1.9",
     "query-string": "^9.1.1",
     "querystring": "^0.2.1",
@@ -58,19 +55,19 @@
     "slick-carousel": "^1.8.1",
     "sonner": "^1.7.1",
     "world-countries": "^5.0.0"
-=======
+
     "query-string": "^9.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-toastify": "^11.0.2",
     "sonner": "^1.7.1"
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/bcrypt": "^5.0.2",
-<<<<<<< HEAD
+
     "@types/leaflet": "^1.9.16",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -78,70 +75,23 @@
     "@types/react-dom": "^19",
     "@types/react-image-gallery": "^1.2.4",
     "@types/react-slick": "^0.23.13",
-=======
+
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.1",
-<<<<<<< HEAD
+
     "postcss": "^8.5.1",
-=======
+
     "postcss": "^8.4.49",
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
     "prisma": "^6.1.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }
-<<<<<<< HEAD
-=======
-=======
-{
-  "name": "hotel-booking",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@kinde-oss/kinde-auth-nextjs": "^2.4.6",
-    "@prisma/client": "^6.1.0",
-    "axios": "^1.7.9",
-    "child_process": "^1.0.2",
-    "hotel-booking": "file:",
-    "mongodb": "^6.12.0",
-    "net": "^1.0.2",
-    "next": "^15.1.5",
-    "next-auth": "^5.0.0-beta.25",
-    "query-string": "^9.1.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.4.0",
-    "react-toastify": "^11.0.2",
-    "sonner": "^1.7.1"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.20",
-    "bcrypt": "^5.1.1",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.1",
-    "postcss": "^8.4.49",
-    "prisma": "^6.1.0",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5"
-  }
-}
->>>>>>> e2e39cc47e4e07420d8618d5ac1cffe754c2e476
->>>>>>> c1f6e38472162c852e5525e6a836b8248b68e0ca
+
