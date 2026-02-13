@@ -20,7 +20,7 @@
     "lucide-react": "^0.513.0",
     "mongodb": "^6.12.0",
     "net": "^1.0.2",
-    "next": "^15.1.5",
+    "next": "15.1.11",
     "next-auth": "^5.0.0-beta.25",
     "query-string": "^9.1.1",
     "react": "^19.0.0",
