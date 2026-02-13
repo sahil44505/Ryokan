@@ -14,7 +14,7 @@ const Reccomendation = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/recommendations');
+        const res = await fetch('https://hotel-recom-deploy.onrender.com/api/recommendations');
         if (!res.ok || res.status === 500) {
           setHasData(false);
           throw new Error('No current bookings or server error');
