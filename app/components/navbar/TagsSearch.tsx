@@ -1,73 +1,37 @@
 'use client';
 
-
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
-
-
-
 const Search = () => {
-    const router = useRouter()
-    async function MyBookings(){
-        router.push('/bookings')
-    }
-    return (
-        <>
-            <div className=" 
+  const router = useRouter();
+
+  const navigateTo = (path: string) => {
+    router.push(path);
+  };
+
+  return (
+    <div className="w-full md:w-auto py-2">
+      <div className="flex flex-row items-center gap-6 justify-between">
         
-         w-[full]
-         md:w-auto
-         
-         py-2
-        
-         
-        ">
-            
-                <div className="
-        flex
-        flex-row
-        items-center
-        gap-4
-        justify-between">
-                    <div onClick={()=>{router.push('/Trips')}}
-                        className="
-            text-base
-            font-semibold
-            px-4
-            hover:underline
-            "
-                    > Trips</div>
-                   
-                    {/* <div className="
-             text-base
-            font-semibold
-            hover:underline
-            px-4">
+        {/* Nearby Search Option */}
+        <div 
+          className="text-base font-semibold text-slate-700 hover:text-blue-600 cursor-pointer hover:underline px-2 transition-colors"
+          onClick={() => navigateTo('/nearby')}
+        >
+          Nearby Search
+        </div>
 
-                         Profile
-                    </div> */}
-                    <div className="
-             text-base
-            font-semibold
-            hover:underline
-            px-4" 
-            onClick={MyBookings}>
-                        Bookings
+        {/* Bookings Option */}
+        <div 
+          className="text-base font-semibold text-slate-700 hover:text-blue-600 cursor-pointer hover:underline px-2 transition-colors"
+          onClick={() => navigateTo('/bookings')}
+        >
+          Bookings
+        </div>
 
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-
-
-
-        </>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Search;

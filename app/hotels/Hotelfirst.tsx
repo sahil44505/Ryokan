@@ -9,7 +9,7 @@ export default function Hotelfirst() {
   const query = searchParams.get("query") || "";
 
   return (
-    <div className="mt-28">
+    <div className="mt-1">
       <HotelSearchResults title={query} />
     </div>
   );

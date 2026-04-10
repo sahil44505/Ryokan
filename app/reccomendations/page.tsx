@@ -1,10 +1,12 @@
 import Reccomendation from "./Reccomendation";
 
-
-const page = () => {
+import getCurrentUser from "../actions/getCurrentUser";
+const page = async() => {
+  const user = await getCurrentUser()
+  const userId = user?.id
   return (
     <div className="mt-24">
-      <Reccomendation/>
+      <Reccomendation userId={userId}/>
     </div>
   );
 }

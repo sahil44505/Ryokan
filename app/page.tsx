@@ -29,55 +29,56 @@ export default function Home() {
     checkAuth();
   }, []);
 
- 
-  
- useEffect(()=>{
- 
-   const gettoast = () => {
-    const hasShownToast =  sessionStorage.getItem("hasShownToast");
-    if (hasShownToast){
-      return 0
-    }
-    if (isAuthenticated) {
-      
-  
-      if (!hasShownToast) {
-        toast.success("Logged in successfully");
-        sessionStorage.setItem("hasShownToast", "true");
-      }
-      
-    }else{ 
-    if(hasShownToast){
-      sessionStorage.removeItem('hasShownToast')
-    }
-  }
-    }
-  
- 
-  
-  gettoast()
- 
- 
 
-  },[isAuthenticated])
-   
-  
-    
+
+  useEffect(() => {
+
+    const gettoast = () => {
+      const hasShownToast = sessionStorage.getItem("hasShownToast");
+      if (hasShownToast) {
+        return 0
+      }
+      if (isAuthenticated) {
+
+
+        if (!hasShownToast) {
+          toast.success("Logged in successfully");
+          sessionStorage.setItem("hasShownToast", "true");
+        }
+
+      } else {
+        if (hasShownToast) {
+          sessionStorage.removeItem('hasShownToast')
+        }
+      }
+    }
+
+
+
+    gettoast()
+
+
+
+  }, [isAuthenticated])
+
+
+
 
   return (
     <>
-    <Hero/>
-    <Suspense fallback={<p>Loading...</p>}>
-        
-     
-    <SearchHero setNearby={setNearbyHotels}/>
-    <CategoryHeader/>
-   
-    
-    <Categories/>
-    <Nearby hotels={nearbyHotels}/>
-     </Suspense>
-     
+      <Hero />
+
+      <Suspense fallback={<div className="p-10 text-center">Loading search...</div>}>
+
+        <SearchHero setNearby={setNearbyHotels} />
+        <CategoryHeader />
+
+
+        <Categories />
+        <Nearby hotels={nearbyHotels} />
+      </Suspense>
+
+
     </>
   );
 }

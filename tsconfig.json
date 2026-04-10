@@ -5,6 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -23,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/[...nextauth].ts", "app/api/auth/[kindeAuth]/route.ts", "app/api/createOrder.ts/route.ts", "createOrder/route.js", "app/components/Payment.tsx", "app/api/searchHotels/route.ts", "app/api/imageshotel/route.js"],
+  "include": ["next-env.d.ts","declarations.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/[...nextauth].ts", "app/api/auth/[kindeAuth]/route.ts", "app/api/createOrder.ts/route.ts", "createOrder/route.js", "app/components/Payment.tsx", "app/api/searchHotels/route.ts", "app/api/imageshotel/route.js", "app/api/createOrder/route.js"],
   "exclude": ["node_modules"]
 }

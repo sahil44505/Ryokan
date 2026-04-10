@@ -1,42 +1,44 @@
 "use client";
 
+import React from "react";
+
 const Hero = () => {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden bg-slate-900">
+      {/* Background Image - Static & Sharp */}
+      <div className="absolute inset-0 z-0">
         <img
           src="https://static.tacdn.com/img2/branding/homepage/hotel-hero-default-4.jpg"
-          alt="Hotel Hero"
-          className="w-full h-full object-cover brightness-75"
+          alt="Luxury Hotel"
+          className="w-full h-full object-cover brightness-[0.6] contrast-[1.1]"
         />
       </div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-black/10 pointer-events-none"></div>
+      {/* Premium Gradient Overlay */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
 
       {/* Content Container */}
-      <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-12 lg:p-16 text-white">
-        {/* Top Content */}
-        <div className="flex justify-between items-start mt-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold max-w-2xl">
-            Discover Your Perfect Stay
+      <div className="relative  mt-36 z-20 h-full flex flex-col justify-center items-center px-6 text-center">
+        
+        <div className="max-w-4xl mb-4 space-y-6">
+          <span className="inline-block text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-blue-400 mb-2">
+            Luxury Stays & Experiences
+          </span>
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight">
+            Travel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">differently.</span>
           </h1>
+          
+          <p className="text-lg   md:text-xl text-slate-200/90 max-w-2xl mx-auto font-medium leading-relaxed">
+            Discover handpicked hotels and hidden gems tailored to your unique journey.
+          </p>
         </div>
 
-        {/* Bottom Content - Search Bar */}
-        {/* <div className="relative mx-auto w-full max-w-4xl bg-white rounded-lg p-4 shadow-xl">
-          <div className="flex flex-col md:flex-row gap-4">
-            <input
-              type="text"
-              placeholder="Where are you going?"
-              className="flex-1 p-3 text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-              Search Hotels
-            </button>
-          </div>
-        </div> */}
+        {/* Visual spacer to account for your external search bar's presence */}
+        <div className="h-32 md:h-48" />
+
+        {/* Subtle Brand Tagline */}
+        
       </div>
     </div>
   );

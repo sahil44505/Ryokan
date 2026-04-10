@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import CategoryBox from "../CategoryBox";
 import Container from "./Container";
 
-const Categories = () => {
+const Categories = ({ onResultsFound }: { onResultsFound?: (data: any[]) => void }) => {
   const params = useSearchParams();
   const category = params?.get("category");
   const pathname = usePathname();
@@ -23,7 +23,9 @@ const Categories = () => {
             key={item.label}
             label={item.label}
             icon={item.icon}
+            kindKey={item.kindKey}
             selected={item.label === category}
+            setNearby={onResultsFound} // Pass the handler here
           />
         ))}
       </div>

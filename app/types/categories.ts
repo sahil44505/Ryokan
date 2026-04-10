@@ -5,6 +5,8 @@ export interface Category {
   icon: IconType;
   description?: string;
   selected?: boolean;
+  kindKey?: string
+  setNearby?: (data: any[]) => void;
 }
 
 export interface CountrySelectValue {

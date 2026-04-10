@@ -1,125 +1,76 @@
-"use client";
+'use client';
+import React, { useEffect, useRef } from 'react';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { MapPin } from 'lucide-react';
 
-import { useEffect, useRef, useState } from "react";
-
-interface HotelMapProps {
-  hotelData: { name: string; price: string }[];
+interface MapProps {
+  longitude: number;
+  latitude: number;
+  hotelName?: string;
 }
 
-export default function HotelMap({ hotelData }: HotelMapProps) {
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const [hotels, setHotels] = useState<
-    { name: string; price: string; latitude: number; longitude: number }[]
-  >([]);
+export const HotelMap = ({ longitude, latitude, hotelName }: MapProps) => {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<maplibregl.Map | null>(null);
+  const GEOAPIFY_KEY = process.env.NEXT_PUBLIC_GEOAPIFY_KEY;
+  const lng = Number(longitude);
+  const lat = Number(latitude);
 
   useEffect(() => {
-    if (!hotelData || hotelData.length === 0) return;
+    if (!mapContainer.current || isNaN(lng) || isNaN(lat)) return;
 
-    // Prevent multiple script loads
-    if (!window.google?.maps) {
-      if (!document.querySelector('script[src*="gomaps.pro"]')) {
-        const script = document.createElement("script");
-        script.src = `https://maps.gomaps.pro/maps/api/js?key=${process.env.NEXT_PUBLIC_GOMAPS_KEY}&libraries=places`;
-        script.async = true;
-        script.defer = true;
-        script.onload = () => fetchAndSetHotels();
-        document.head.appendChild(script);
-      }
-    } else {
-      fetchAndSetHotels();
-    }
-  }, [hotelData]); // ✅ Only run once
-
-  const fetchAndSetHotels = async () => {
-    setTimeout(async () => {
-      const results = await Promise.all(
-        hotelData.map((hotel) => fetchHotelLocation(hotel.name, hotel.price))
-      );
-
-      const validResults = results.filter((hotel) => hotel !== null) as {
-        name: string;
-        price: string;
-        latitude: number;
-        longitude: number;
-      }[];
-
-      setHotels(validResults);
-    }, 1000);
-  };
-
-  useEffect(() => {
-    if (!mapRef.current || hotels.length === 0) return;
-
-    const map = new google.maps.Map(mapRef.current, {
-      center: { lat: hotels[0].latitude, lng: hotels[0].longitude },
-      zoom: 14,
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: `https://maps.geoapify.com/v1/styles/osm-bright-smooth/style.json?apiKey=${GEOAPIFY_KEY}`,
+      center: [lng, lat],
+      zoom: 15,
+      attributionControl: false,
     });
 
-    hotels.forEach((hotel) => {
-      const marker = new google.maps.Marker({
-        position: { lat: hotel.latitude, lng: hotel.longitude },
-        map,
-        icon: {
-          url: createCustomMarker(hotel.price),
-          scaledSize: new google.maps.Size(120, 50),
-        },
-      });
+    map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<div style="font-size:14px;font-weight:bold;color:#333;">${hotel.name} - ${hotel.price}</div>`,
-      });
+    // --- GOOGLE STYLE MARKER ---
+    const el = document.createElement('div');
+    el.className = 'google-style-marker';
+    // Using a high-fidelity SVG that replicates the classic G-Maps teardrop
+    el.innerHTML = `
+      <div style="filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25)); cursor: pointer;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 0C13.2 0 8 5.2 8 12C8 21 20 36 20 36C20 36 32 21 32 12C32 5.2 26.8 0 20 0Z" fill="#EA4335"/>
+          <path d="M20 16C22.2091 16 24 14.2091 24 12C24 9.79086 22.2091 8 20 8C17.7909 8 16 9.79086 16 12C16 14.2091 17.7909 16 20 16Z" fill="#760E06"/>
+          <circle cx="20" cy="12" r="4" fill="white"/>
+        </svg>
+      </div>
+    `;
 
-      marker.addListener("mouseover", () => infoWindow.open(map, marker));
-      marker.addListener("mouseout", () => infoWindow.close());
-    });
-  }, [hotels]);
+    new maplibregl.Marker({ 
+        element: el,
+        anchor: 'bottom' // Ensures the tip of the pin points exactly at the coordinates
+    })
+      .setLngLat([lng, lat])
+      .addTo(map.current);
 
-  return <div ref={mapRef} style={{ width: "100%", height: "500px" }} />;
-}
+    return () => {
+      map.current?.remove();
+      map.current = null;
+    };
+  }, [lng, lat]);
 
-// Fetch hotel location using GoMaps.pro API
-const fetchHotelLocation = async (hotelName: string, price: string) => {
-  try {
-    const response = await fetch(
-      `https://maps.gomaps.pro/maps/api/geocode/json?address=${encodeURIComponent(
-        hotelName
-      )}&key=${process.env.NEXT_PUBLIC_GOMAPS_KEY}`
-    );
-    const data = await response.json();
-    if (data.status === "OK" && data.results.length > 0) {
-      return {
-        name: hotelName,
-        price,
-        latitude: data.results[0].geometry.location.lat,
-        longitude: data.results[0].geometry.location.lng,
-      };
-    }
-  } catch (error) {
-    console.error("Error fetching hotel location:", error);
-  }
-  return null;
-};
-
-// Create a custom marker with price
-const createCustomMarker = (price: string) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 120;
-  canvas.height = 50;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return "";
-
-  ctx.fillStyle = "#000000";
-  ctx.strokeStyle = "#c1c8ce";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.roundRect(10, 5, 100, 40, 15);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = "white";
-  ctx.font = "bold 16px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(`$` + price, 60, 30);
-
-  return canvas.toDataURL();
+  return (
+    <div className="relative w-full h-full">
+      <div ref={mapContainer} className="w-full h-full rounded-2xl" />
+      
+      <div className="absolute bottom-4 left-4 flex gap-2">
+        <a 
+          href={`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`}
+          target="_blank"
+          rel="noreferrer"
+          className="bg-white text-slate-900 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-xl hover:bg-slate-50 transition-all flex items-center gap-2 border border-slate-100"
+        >
+          <MapPin size={12} className="text-[#EA4335]" /> Directions
+        </a>
+      </div>
+    </div>
+  );
 };

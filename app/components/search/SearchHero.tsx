@@ -1,12 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { MapPin } from "lucide-react";
 
-
-const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean ,setNearby: (data: any[]) => void;}) => {
+const SearchHero = ({ isNavbarMode = false, setNearby }: { isNavbarMode?: boolean, setNearby: (data: any[]) => void; }) => {
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,9 +14,8 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
-  const [showHeroSearch, setShowHeroSearch] = useState(true);
 
-  // Hide only the hero search bar when scrolling past 10px
+  // Get Geolocation
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -30,26 +27,14 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
           setIsLoading(false);
         },
         (err) => {
-          setError("Failed to get location. Please enable GPS and try again.");
+          setError("Failed to get location.");
           setIsLoading(false);
         }
       );
     } else {
-      setError("Geolocation is not supported by your browser.");
       setIsLoading(false);
     }
   }, []);
- 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!isNavbarMode) {
-        setShowHeroSearch(window.scrollY <= 200);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isNavbarMode]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -58,39 +43,25 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSearch = async () => {
-
-    try {
-      
-      router.push(`/hotels?query=${query}`);
-    } catch (err) {
-      console.log(err);
-    }
-   
-    
+    if (!query.trim()) return;
+    router.push(`/hotels?query=${query}`);
   };
-  async function handleNearby(){
-    if(location){
-      const res:any = await axios.post('/api/getnearby',{location})
-      const data =  res.data
-      setNearby(data)
-      
+
+  async function handleNearby() {
+    if (location) {
+      const res: any = await axios.post('/api/getnearby', { location });
+      const data = res.data;
+      setNearby(data);
     }
-    
-    setIsOpen(false)
+    setIsOpen(false);
   }
 
-   
- 
-  // Hide the hero search bar when scrolled past 10px, but keep navbar search
-  if (!showHeroSearch && !isNavbarMode) return null;
+  // --- SCROLL LOGIC REMOVED COMPLETELY ---
 
   return (
     <div
@@ -98,14 +69,14 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
       className={`${
         isNavbarMode
           ? "w-[342px] bg-white absolute top-[55%] left-[36%] transform -translate-x-1/2 -translate-y-1/2"
-          : "w-[60vw] font-normal absolute top-[278px] left-[50%] transform -translate-x-1/2"
-      }`}
+          : "w-[90vw] md:w-[60vw] font-normal absolute top-[278px] left-[50%] transform -translate-x-1/2"
+      } z-50`}
     >
       <div
         onClick={() => setIsOpen(true)}
-        className="relative w-full flex items-center bg-white rounded-full px-3 py-2 border border-gray-400 focus-within:ring-0 text-black"
+        className="relative w-full flex items-center bg-white rounded-full px-3 py-2 border border-gray-400 focus-within:ring-0 text-black shadow-md"
       >
-        <Search className="w-5 h-5 text-black" />
+        <Search className="w-5 h-5 text-black ml-1" />
         <input
           type="text"
           placeholder="Search for hotels and places..."
@@ -114,10 +85,11 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
           }`}
           onFocus={() => setIsOpen(true)}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
         <button
           onClick={handleSearch}
-          className="bg-black text-white px-3 py-1 rounded-full font-medium text-base"
+          className="bg-black text-white px-4 py-1.5 rounded-full font-medium text-base hover:opacity-90 transition-opacity"
         >
           {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Search"}
         </button>
@@ -125,17 +97,14 @@ const SearchHero = ({ isNavbarMode = false ,setNearby}: { isNavbarMode?: boolean
 
       {/* Show dropdown only in hero mode */}
       {isOpen && !isNavbarMode && (
-        <div className="absolute flex top-full left-0 w-full bg-white shadow-lg rounded-lg mt-2 p-4 font-medium z-50">
-          <MapPin className="w-5 h-5 mt-2 text-black" />
+        <div className="absolute top-full left-0 w-full bg-white shadow-xl rounded-2xl mt-2 p-2 font-medium z-50 border border-gray-100">
           <button
-
-            className="block text-left w-full text-black py-2 hover:bg-gray-200 px-2 rounded font-medium"
+            className="flex items-center w-full text-black py-3 hover:bg-gray-100 px-3 rounded-xl transition-colors"
             onClick={handleNearby}
           >
-            Nearby Hotels
-            
+            <MapPin className="w-5 h-5 mr-3 text-black" />
+            <span className="font-semibold">Nearby Hotels</span>
           </button>
-          
         </div>
       )}
     </div>

@@ -1,38 +1,33 @@
+import { NextResponse } from 'next/server';
+import axios from 'axios';
 
-import { NextResponse } from "next/server";
-import axios from "axios";
-export async function POST(req:Request,res:Response){
-  
-   const body = await req.json()
-   const{title,checkIn,checkOut} = body
-    
-    const checkInDate = new Date(checkIn).toISOString().split("T")[0];
-    const checkOutDate = new Date(checkOut).toISOString().split("T")[0];
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const hotelId = searchParams.get('hotelId');
+  const entityId = searchParams.get('entityId');
 
+  if (!hotelId || !entityId) {
+    return NextResponse.json({ error: "Missing Ids" }, { status: 400 });
+  }
 
-    // Parameters for SerpApi
-    const params = {
-        engine: "google_hotels",
-        q: title,
-        hl: "en",
-        gl: "us",
-        check_in_date: checkInDate,
-        check_out_date: checkOutDate,
-        currency: "USD",
-        api_key: process.env.NEXT_PUBLIC_SERPAPI_KEY,
-    };
+  try {
+    const response = await axios.get(
+      'https://sky-scrapper.p.rapidapi.com/api/v1/hotels/getHotelDetails',
+      {
+        params: { hotelId, entityId },
+        headers: {
+          'x-rapidapi-key': process.env.RAPID_API_KEY, // Secured on the server
+          'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com',
+        },
+      }
+    );
 
-    try {
-        const response = await axios.get('https://serpapi.com/search', { params });
-       
-        const hotels = response.data || response.data.properties
-      
-        
-      
-
-        return NextResponse.json(hotels);
-    } catch (error:any) {
-        console.error('Error fetching hotel data:', error.message);
-        return NextResponse.json({ error: 'Failed to fetch hotel data.' },{status:500});
-    }
+    return NextResponse.json(response.data);
+  } catch (error: any) {
+    console.error("Backend Detail Error:", error.response?.data || error.message);
+    return NextResponse.json(
+      { error: error.response?.data?.message || "Failed to fetch details" },
+      { status: error.response?.status || 500 }
+    );
+  }
 }

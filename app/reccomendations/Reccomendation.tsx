@@ -3,18 +3,21 @@ import React, { useEffect, useState } from 'react';
 import HotelListing from '../hotels/HotelSearchResults';
 import ReccomendationsList from './ReccomendationsList';
 import { Home } from 'lucide-react';
-
-const Reccomendation = () => {
+import getCurrentUser from '../actions/getCurrentUser';
+const Reccomendation = ({ userId }: { userId: string | undefined }) => {
+  
+  console.log(userId)
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [titles, setTitles] = useState<string[]>([]);
   const [error, setError] = useState(null);
   const [hasdata, setHasData] = useState(false);
+  
 
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await fetch('https://hotel-recom-deploy.onrender.com/api/recommendations');
+        const res = await fetch(`http://127.0.0.1:8000/api/recommendations/${userId}`);
         if (!res.ok || res.status === 500) {
           setHasData(false);
           throw new Error('No current bookings or server error');
@@ -22,7 +25,7 @@ const Reccomendation = () => {
 
         const data = await res.json();
         console.log("Data:", data)
-        const extractedTitles = data.slice(0, 5).map((item: any) => item.title);
+        const extractedTitles = data.map((item: any) => item.title);
         setTitles(extractedTitles);
         setRecommendations(data);
         setHasData(true);
@@ -36,7 +39,7 @@ const Reccomendation = () => {
 
     fetchRecommendations();
   }, []);
-console.log("Titles:", titles)
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">

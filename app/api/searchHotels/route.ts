@@ -1,91 +1,61 @@
 import axios from "axios";
 
 import { NextResponse } from "next/server";
-import getCurrentUser from "../../actions/getCurrentUser";
-export async function POST(req:any, res:any) {
-    const currentUser:any= await getCurrentUser();
-    console.log("from searchhotels",currentUser.id)
-    const{title} = await req.json()
-    
-    
-  
-  
-   
 
-
-    const params = {
-        api_key:process.env.NEXT_PUBLIC_SERPAPI_KEY ,
-        engine: "google",
-        q: title,
-        google_domain: "google.com",
-        hl: "en",
-    };
+const RAPID_HEADERS = {
+    'x-rapidapi-key': process.env.RAPID_API_KEY,
+    'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com'
+};
+const formatDate = (date: Date) => date.toISOString().split('T')[0];
+export async function POST(req: Request) {
     try {
-       
-        const response = await axios.get('https://serpapi.com/search', { params });
-        const hotels = response.data
-      
-        const filters = response.data.filters
-
-        const map_results = response.data.answer_box?.map_results
+        const { title, checkin, checkout } = await req.json();
+        const today = new Date();
         
-        const ads = response.data.ads
-    
-       
-        const results =response.data.answer_box?.hotels
-        const knowledgeGraph = response.data.knowledge_graph;
-        
-        let data;
+        const checkinDate = new Date(today);
+        checkinDate.setDate(today.getDate() + 1); // Tomorrow
 
-        // If ads exist, return ads
-        if (ads && ads.length > 0) {
-            data = ads;
+        const checkoutDate = new Date(today);
+        checkoutDate.setDate(today.getDate() + 3); // 2 days after check-in
+
+        const checkinStr = formatDate(checkinDate);
+        const checkoutStr = formatDate(checkoutDate);
+        // STEP 1: Get structured destinations from the string "Mumbai, India"
+        const destinationRes = await axios.get('https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchDestinationOrHotel', {
+            params: { query: title },
+            headers: RAPID_HEADERS
+        });
+
+        const destinations = destinationRes.data.data; // This is your "Row" of results
+
+        if (!destinations || destinations.length === 0) {
+            return NextResponse.json({ msg: "No destinations found", data: [] });
         }
-        // If results exist, return results
-        else if (results && results.length > 0) {
-            data = results;
-           
-        }else if(hotels.error){
-          
-            return NextResponse.json({ msg: "No hotel data found" });
-        }
-        // If both ads and results are empty, extract from knowledge_graph
-        else if (knowledgeGraph) {
-            data = [{
-                title: knowledgeGraph.title ,
-                thumbnail: knowledgeGraph.thumbnail ,
-             
-                rating: knowledgeGraph.rating ,
-               
-               
-                description: knowledgeGraph.description ,
-               
-                website: knowledgeGraph.website ,
-               
-                price: knowledgeGraph.pricing?.offers?.[0]?.price ,
-                source: knowledgeGraph.pricing?.offers?.[0]?.source , // First booking link
-                tracking_link : knowledgeGraph.pricing?.offers?.[0]?.link ,
-                
-        }];
-            
-        } else {
-            return NextResponse.json({ msg: "No hotel data found" });
-        }
-       if (data.length ===0){
-       
-        return NextResponse.json({ msg: "No hotel data found" });
-       }
-       
-        return NextResponse.json({ data });
 
-      
-       
-        
+        // STEP 2: Grab the first (default) entityId
+        const defaultEntityId = destinations[0].entityId;
 
+        // STEP 3: Hit the search hotels API using that default ID
+        const hotelListRes = await axios.get('https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchHotels', {
+            params: {
+                entityId: defaultEntityId,
+                checkin: checkinStr,
+                checkout: checkoutStr,
+                adults: '2',
+                rooms: '1'
+            },
+            headers: RAPID_HEADERS
+        });
        
-    } catch (err) {
-        console.error(err)
-        return NextResponse.json({msg:"Error finding hotels"})
-        
+        // Return both: the list of locations for your UI row, and the actual hotels
+        return NextResponse.json({ 
+            availableLocations: destinations, 
+            hotels: hotelListRes.data.data ,
+            EntityId : defaultEntityId
+        });
+
+    } catch (err: any) {
+        console.error("Workflow Error:", err.message);
+        return NextResponse.json({ error: "Failed to fetch travel data" }, { status: 500 });
     }
 }
