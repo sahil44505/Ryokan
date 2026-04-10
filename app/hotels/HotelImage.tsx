@@ -68,6 +68,8 @@ const HotelImage: React.FC<HotelImageProps> = ({ title }) => {
               alt={`Hotel Image ${currentIndex + 1}`}
               width={800}
               height={500}
+              unoptimized
+              referrerPolicy="no-referrer"
               priority
             />
           </div>
