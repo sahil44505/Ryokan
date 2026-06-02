@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/((?!searchHotelsforpy).*)" ,
-      "destination": "https://ryokan-python.vercel.app/api/:path*"
+      "destination": "https://ryokan-python.vercel.app/api/:1"
     }
   ]
 }
