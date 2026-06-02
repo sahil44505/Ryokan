@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
+      "source": "/api/((?!searchHotelsforpy).*)" ,
       "destination": "https://ryokan-python.vercel.app/api/:path*"
     }
   ]
