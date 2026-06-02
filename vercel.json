@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/searchHotelsforpy",
-      "destination": "/api/searchHotelsforpy"
+      "destination": "/api/searchhotelsforpy"
     },
     {
       "source": "/api/recommendations/:path*",
