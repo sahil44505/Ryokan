@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://ryokan-python.vercel.app/api/:path*"
+      "source": "/api/searchHotelsforpy",
+      "destination": "/api/searchhotelsforpy"
+    },
+    {
+      "source": "/api/recommendations/:path*",
+      "destination": "https://ryokan-python.vercel.app/api/recommendations/:path*"
     }
   ]
 }
