@@ -5,8 +5,8 @@
       "destination": "/api/searchHotelsforpy"
     },
     {
-      "source": "/api/:path*",
-      "destination": "https://ryokan-python.vercel.app/api/:path*"
+      "source": "/api/recommendations/:path*",
+      "destination": "https://ryokan-python.vercel.app/api/recommendations/:path*"
     }
   ]
 }
