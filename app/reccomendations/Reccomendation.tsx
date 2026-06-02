@@ -17,7 +17,7 @@ const Reccomendation = ({ userId }: { userId: string | undefined }) => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await fetch(`https://ryokan-python.vercel.app/api/recommendations/${userId}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/api/recommendations/${userId}`);
         if (!res.ok || res.status === 500) {
           setHasData(false);
           throw new Error('No current bookings or server error');
